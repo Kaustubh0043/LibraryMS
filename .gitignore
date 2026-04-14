@@ -36,4 +36,5 @@ Thumbs.db
 # Build files
 staticfiles/
 dist/
-build/
+# Media
+media/certificates/
