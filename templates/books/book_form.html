@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Book Form{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg border-0 rounded-4" style="background-color: var(--card-bg); color: var(--text-primary); transition: background-color 0.3s, color 0.3s;">
+        <div class="card-header border-0 py-4" style="background: linear-gradient(135deg, #0d6efd 0%, #198754 100%); border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+          <h3 class="mb-0 text-center fw-bold text-white">
+            <i class="bi bi-journal-plus me-2"></i> {% if book %}Edit Book{% else %}Add New Book{% endif %}
+          </h3>
+        </div>
+        <div class="card-body p-5">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="book-form-wrapper">
+               {{ form.as_p }}
+            </div>
+            <div class="d-flex justify-content-end gap-3 mt-5 border-top pt-4" style="border-color: var(--border-color) !important;">
+              <a class="btn btn-light px-4 py-2 rounded-pill fw-medium border" href="/library/books/">Cancel</a>
+              <button class="btn btn-primary px-4 py-2 rounded-pill fw-bold shadow-sm">Save Book Details</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Modern styling for django rendered forms */
+.book-form-wrapper input,
+.book-form-wrapper select,
+.book-form-wrapper textarea {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.book-form-wrapper input[type="file"] {
+  padding: 8px 10px;
+}
+
+.book-form-wrapper input:focus,
+.book-form-wrapper select:focus,
+.book-form-wrapper textarea:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+}
+
+.book-form-wrapper label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.book-form-wrapper span.helptext {
+  font-size: 0.8rem;
+  margin-top: -15px;
+  margin-bottom: 20px;
+  display: block;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+body.dark-mode .book-form-wrapper input,
+body.dark-mode .book-form-wrapper select,
+body.dark-mode .book-form-wrapper textarea {
+  background-color: #1a1a1a;
+  border-color: #444;
+  color: #fff;
+}
+
+body.dark-mode .btn-light {
+  background-color: #2d2d2d;
+  border-color: #444 !important;
+  color: #fff;
+}
+body.dark-mode .btn-light:hover {
+  background-color: #3d3d3d;
+}
+</style>
+{% endblock %}

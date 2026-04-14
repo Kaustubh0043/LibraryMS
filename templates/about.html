@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block title %}About - ALeX Library{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+  .about-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 4rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  .profile-img-container {
+    position: relative;
+    display: inline-block;
+  }
+  .profile-img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #0d6efd;
+    box-shadow: 0 10px 25px rgba(13, 110, 253, 0.3);
+    transition: transform 0.4s ease;
+  }
+  .profile-img:hover {
+    transform: scale(1.05);
+  }
+  .feature-pill {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+  .feature-pill:hover {
+    transform: translateY(-5px);
+    border-color: #0d6efd;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+  .feature-icon-wrapper {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 110, 253, 0.1);
+  }
+  .about-title {
+    font-weight: 700;
+    font-size: 3rem;
+    background: linear-gradient(120deg, #0d6efd, #198754);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .lead-subtitle {
+    font-weight: 300;
+    color: var(--text-secondary);
+  }
+  @media (max-width: 768px) {
+    .about-container { padding: 2rem; }
+    .about-title { font-size: 2.2rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="about-container reveal">
+    <!-- Header -->
+    <div class="text-center mb-5">
+      <h1 class="about-title">About ALeX</h1>
+      <p class="lead lead-subtitle">A modern Library Management System built with Django</p>
+    </div>
+    
+    <!-- Profile Section -->
+    <div class="row align-items-center mb-5 pb-4 border-bottom" style="border-color: var(--border-color) !important;">
+      <div class="col-md-4 text-center mb-4 mb-md-0">
+        <div class="profile-img-container">
+          <img src="/static/img/kaustubh.jpeg" alt="Kaustubh Jadhav" class="profile-img" />
+        </div>
+      </div>
+      <div class="col-md-8">
+        <h3 class="fw-bold mb-3">Hello! I'm Kaustubh Jadhav</h3>
+        <p class="text-muted mb-3" style="font-size: 1.1rem; line-height: 1.6;">
+          A Computer Science and Engineering student currently pursuing my B.Tech at Alard University, Pune.
+        </p>
+        <p class="text-muted mb-3" style="line-height: 1.6;">
+          I developed this Library Management System website as part of my academic journey and to explore how technology can solve everyday challenges in education. The system is designed to simplify book management, issue/return tracking, and fine payments in a premium, highly digital way.
+        </p>
+        <p class="text-muted mb-0" style="line-height: 1.6;">
+          Beyond this project, I'm passionate about Web Development, Android Development, IoT, and Machine Learning. I enjoy building practical and user-friendly applications that connect theory with real-world problems.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Features Grid -->
+    <div class="row">
+      <div class="col-12 text-center mb-4">
+        <h4 class="fw-bold">System Features</h4>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="feature-pill">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-shield-check text-success fs-4"></i>
+            </div>
+            <span style="font-weight: 500; color: var(--text-primary);">Secure Role Management</span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="feature-pill">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-search text-primary fs-4"></i>
+            </div>
+            <span style="font-weight: 500; color: var(--text-primary);">Advanced Book Search</span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="feature-pill">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-arrow-left-right text-warning fs-4"></i>
+            </div>
+            <span style="font-weight: 500; color: var(--text-primary);">Issue/Return Workflow</span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="feature-pill">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-credit-card text-info fs-4"></i>
+            </div>
+            <span style="font-weight: 500; color: var(--text-primary);">Razorpay UPI Integration</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Certifications & Skills Grid -->
+    <div class="row mt-5 pt-5 border-top" style="border-color: var(--border-color) !important;">
+      <div class="col-12 text-center mb-4">
+        <h4 class="fw-bold fs-2" style="color: var(--text-primary);">My Skills</h4>
+      </div>
+      <div class="col-12 mb-5">
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <span class="badge bg-primary fs-5 px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-filetype-py me-1"></i> Python</span>
+          <span class="badge bg-success fs-5 px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-heptagon-half me-1"></i> Django</span>
+          <span class="badge bg-info text-dark fs-5 px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-window me-1"></i> HTML/CSS</span>
+          <span class="badge bg-warning text-dark fs-5 px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-code me-1"></i> JavaScript</span>
+          <span class="badge bg-danger fs-5 px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-cloud me-1"></i> Azure / IoT</span>
+          <span class="badge bg-secondary fs-5 px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-database me-1"></i> Database Management</span>
+        </div>
+      </div>
+      
+      <!-- Certificates Scroll -->
+      <div class="col-12 text-center mb-4 mt-3">
+        <h4 class="fw-bold fs-2" style="color: var(--text-primary);">Certifications</h4>
+        <p class="text-muted">Swipe or scroll to view.</p>
+      </div>
+      <div class="col-12">
+        <div class="d-flex gap-4 overflow-auto pb-4 cert-scroller" style="scrollbar-width: thin; padding: 10px;">
+          <div class="cert-card flex-shrink-0">
+             <img src="/media/certificates/azure.jpg" alt="Azure Certificate" class="img-fluid rounded-4 shadow" style="height: 280px; width: auto; object-fit: contain; background: white; padding: 5px; border: 1px solid var(--border-color);">
+          </div>
+          <div class="cert-card flex-shrink-0">
+             <img src="/media/certificates/cert1.jpg" alt="Certificate 1" class="img-fluid rounded-4 shadow" style="height: 280px; width: auto; object-fit: contain; background: white; padding: 5px; border: 1px solid var(--border-color);">
+          </div>
+          <div class="cert-card flex-shrink-0">
+             <img src="/media/certificates/cert2.jpg" alt="Certificate 2" class="img-fluid rounded-4 shadow" style="height: 280px; width: auto; object-fit: contain; background: white; padding: 5px; border: 1px solid var(--border-color);">
+          </div>
+          <div class="cert-card flex-shrink-0">
+             <img src="/media/certificates/cert3.jpg" alt="Certificate 3" class="img-fluid rounded-4 shadow" style="height: 280px; width: auto; object-fit: contain; background: white; padding: 5px; border: 1px solid var(--border-color);">
+          </div>
+          <div class="cert-card flex-shrink-0">
+             <img src="/media/certificates/cert4.jpg" alt="Certificate 4" class="img-fluid rounded-4 shadow" style="height: 280px; width: auto; object-fit: contain; background: white; padding: 5px; border: 1px solid var(--border-color);">
+          </div>
+          <div class="cert-card flex-shrink-0">
+             <img src="/media/certificates/cert5.jpg" alt="Certificate 5" class="img-fluid rounded-4 shadow" style="height: 280px; width: auto; object-fit: contain; background: white; padding: 5px; border: 1px solid var(--border-color);">
+          </div>
+          <div class="cert-card flex-shrink-0">
+             <img src="/media/certificates/cert6.jpg" alt="Certificate 6" class="img-fluid rounded-4 shadow" style="height: 280px; width: auto; object-fit: contain; background: white; padding: 5px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const revealEl = document.querySelector('.reveal');
+    if (revealEl) {
+      revealEl.style.opacity = '0';
+      revealEl.style.transform = 'translateY(40px)';
+      revealEl.style.transition = 'all 0.8s ease-out';
+      
+      setTimeout(() => {
+        revealEl.style.opacity = '1';
+        revealEl.style.transform = 'translateY(0)';
+      }, 100);
+    }
+  });
+</script>
+{% endblock %}

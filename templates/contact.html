@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us - ALeX Library{% endblock %}
+
+{% block content %}
+<div class="container py-5 d-flex align-items-center" style="min-height: 80vh;">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-10 col-lg-8 mx-auto">
+      <div class="card shadow-lg border-0 rounded-4" style="background-color: var(--card-bg); overflow: hidden;">
+        <div class="card-header border-0 text-white p-4" style="background: linear-gradient(135deg, #0d6efd 0%, #198754 100%);">
+          <h3 class="fw-bold mb-1 text-center"><i class="bi bi-envelope-paper-heart me-2"></i>Contact Us</h3>
+          <p class="text-center mb-0 opacity-75">We'd love to hear from you!</p>
+        </div>
+        <div class="card-body p-5">
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+              <label class="form-label fw-bold mb-2" style="color: var(--text-primary);">Full Name</label>
+              <input type="text" class="form-control p-3 shadow-sm" name="name" required placeholder="John Doe" style="border-radius: 12px; border: 1px solid var(--border-color);">
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label fw-bold mb-2" style="color: var(--text-primary);">Email Address</label>
+              <input type="email" class="form-control p-3 shadow-sm" name="email" required placeholder="john@example.com" style="border-radius: 12px; border: 1px solid var(--border-color);">
+            </div>
+            
+            <div class="mb-5">
+              <label class="form-label fw-bold mb-2" style="color: var(--text-primary);">Your Message</label>
+              <textarea class="form-control p-3 shadow-sm" name="message" rows="5" required placeholder="How can we help you today?" style="border-radius: 12px; border: 1px solid var(--border-color); resize: none;"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold fs-5 shadow-sm">
+              <i class="bi bi-send me-2"></i>Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

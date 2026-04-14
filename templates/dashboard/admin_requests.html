@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Admin Requests{% endblock %}
+{% block content %}
+<h2>Approve Requests</h2>
+<table class="table table-bordered mt-3">
+  <thead><tr><th>User</th><th>Book</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody>
+  {% for t in pending %}
+  <tr>
+    <td>{{ t.user.username }}</td>
+    <td>{{ t.book.title }}</td>
+    <td>{{ t.get_status_display }}</td>
+    <td>
+      <form method="post" action="/library/admin/requests/"> ... </form>
+    </td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="4">Nothing to approve.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+
+<div class="alert alert-warning">admin_requests view rendered!</div>
+{% if post_triggered %}
+<div class="alert alert-info">POST request received by view!</div>
+{% endif %}

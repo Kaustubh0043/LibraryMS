@@ -1,0 +1,11 @@
+python manage.py shell
+
+
+from django.core.mail import send_mail
+send_mail(
+    subject='Test Email',
+    message='This is a test email from Django shell.',
+    from_email='alardelibrary@gmail.com',
+    recipient_list=['kaustubhjadhav0043@gmail.com'],
+    fail_silently=False
+)

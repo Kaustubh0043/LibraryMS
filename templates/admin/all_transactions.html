@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Global Library Log{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="dashboard-header mb-4 d-flex align-items-center justify-content-between p-4 rounded-4 shadow-sm" style="background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-primary) 100%); border: 1px solid var(--border-color);">
+    <div>
+      <h2 class="fw-bold mb-1" style="color: var(--text-primary);">
+        <i class="bi bi-journal-text text-primary me-2"></i> All Transactions
+      </h2>
+      <p class="text-muted mb-0">Complete historical record of every book issue, return, and cancellation.</p>
+    </div>
+    <a href="{% url 'admin_user_list' %}" class="btn btn-outline-primary rounded-pill px-4">See User List</a>
+  </div>
+
+  <div class="card shadow-sm border-0 rounded-4" style="background-color: var(--card-bg); overflow: hidden;">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" style="color: var(--text-primary);">
+        <thead class="bg-light">
+          <tr>
+            <th class="ps-4">Date</th>
+            <th>User</th>
+            <th>Book</th>
+            <th>Status</th>
+            <th class="pe-4 text-end">Fine Paid</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in transactions %}
+          <tr>
+            <td class="ps-4 text-muted small">{{ t.created_at|date:"M d, Y H:i" }}</td>
+            <td><a href="{% url 'admin_user_detail' t.user.id %}" class="text-decoration-none fw-medium">{{ t.user.username }}</a></td>
+            <td class="fw-medium">{{ t.book.title }}</td>
+            <td>
+              <span class="badge rounded-pill 
+                {% if t.status == 'returned' %}bg-success
+                {% elif t.status == 'issued' %}bg-primary
+                {% elif t.status == 'cancelled' %}bg-danger
+                {% elif t.status == 'overdue' %}bg-dark
+                {% else %}bg-warning text-dark{% endif %}">
+                {{ t.get_status_display }}
+              </span>
+            </td>
+            <td class="pe-4 text-end fw-bold text-success">
+              {% if t.fine > 0 %}₹{{ t.fine }}{% else %}-{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<style>
+/* Mode-Switching Visibility */
+.table td, .table th { color: #000 !important; }
+.text-muted { color: #333 !important; }
+
+body.dark-mode .table td {
+    color: #ffcc00 !important; /* Amber titles */
+    font-weight: 500 !important;
+}
+
+body.dark-mode .table td a {
+    color: #00e5ff !important; /* Cyan user links */
+    text-decoration: underline;
+}
+
+body.dark-mode .text-muted {
+    color: #00e5ff !important; /* Cyan dates */
+}
+
+body.dark-mode thead.bg-light {
+    background-color: rgba(255,255,255,0.05) !important;
+}
+
+body.dark-mode thead th {
+    color: #fff !important;
+}
+</style>
+{% endblock %}

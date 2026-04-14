@@ -1,0 +1,583 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - ALeX Library{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  /* Hero Section */
+  .hero-wrapper {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -4.5rem; /* Offset for the navbar to make video truly full screen */
+  }
+  
+  .hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translateX(-50%) translateY(-50%) scale(1.05);
+    z-index: 0;
+    object-fit: cover;
+    animation: slowZoom 20s infinite alternate;
+  }
+  
+  @keyframes slowZoom {
+    0% { transform: translateX(-50%) translateY(-50%) scale(1.05); }
+    100% { transform: translateX(-50%) translateY(-50%) scale(1.15); }
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+  }
+  
+  /* Glassmorphism Card */
+  .glass-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 4rem 3rem;
+    max-width: 900px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .glass-title {
+    font-weight: 700;
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  
+  .glass-subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+  
+  /* Buttons */
+  .btn-custom {
+    border-radius: 50px;
+    font-weight: 500;
+    padding: 0.8rem 2.5rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    display: inline-block;
+  }
+  
+  .btn-primary-custom {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+  }
+  
+  .btn-primary-custom:hover {
+    background-color: #0b5ed7;
+    color: white;
+    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.6);
+    transform: translateY(-3px);
+  }
+  
+  .btn-secondary-custom {
+    background-color: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.8);
+  }
+  
+  .btn-secondary-custom:hover {
+    background-color: white;
+    color: #111;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255,255,255,0.4);
+  }
+  
+  .btn-success-custom {
+    background-color: #198754;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.4);
+  }
+  
+  .btn-success-custom:hover {
+    background-color: #157347;
+    color: white;
+    box-shadow: 0 8px 25px rgba(25, 135, 84, 0.6);
+    transform: translateY(-3px);
+  }
+
+  /* Shared Section Styling */
+  .section-padding { padding: 6rem 0; }
+  .section-title {
+    font-weight: 700;
+    margin-bottom: 3.5rem;
+    text-align: center;
+    position: relative;
+  }
+  
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #0d6efd;
+    margin: 15px auto 0;
+    border-radius: 2px;
+  }
+  
+  /* Featured Books */
+  .book-card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    background: var(--card-bg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    height: 100%;
+  }
+  
+  .book-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.15);
+  }
+  
+  .book-img-wrapper {
+    height: 320px;
+    overflow: hidden;
+    position: relative;
+    background: #f0f0f0;
+  }
+  
+  .book-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .book-card:hover .book-img { transform: scale(1.08); }
+  
+  .book-info {
+    padding: 1.5rem;
+  }
+  
+  .book-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .book-author {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+  
+  /* Features */
+  .feature-box {
+    padding: 2.5rem;
+    border-radius: 20px;
+    background: var(--card-bg);
+    transition: all 0.4s ease;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    height: 100%;
+  }
+  
+  .feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-color: #0d6efd;
+  }
+  
+  .feature-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #0d6efd, #198754);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
+  
+  .feature-box h4 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  /* Stats Section */
+  .stats-section {
+    background: linear-gradient(135deg, #111 0%, #222 100%);
+    color: white;
+    padding: 5rem 0;
+    position: relative;
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  .stat-item h3 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(120deg, #64b5f6, #81c784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-item p {
+    font-size: 1.1rem;
+    color: #ccc;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Testimonials */
+  .testimonial-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+  
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+  
+  .testimonial-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 3px solid #0d6efd;
+  }
+  
+  .quote-icon {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 3rem;
+    color: var(--border-color);
+    opacity: 0.5;
+  }
+  
+  /* Call To Action */
+  .cta-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #198754 100%);
+    color: white;
+    text-align: center;
+    padding: 7rem 0;
+    border-radius: 30px;
+    margin: 4rem auto;
+    max-width: 95%;
+  }
+  
+  .cta-section h2 { 
+    font-weight: 700; 
+    font-size: 3rem;
+    margin-bottom: 1.5rem; 
+  }
+  
+  .cta-btn {
+    background: white;
+    color: #0d6efd;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .cta-btn:hover {
+    background: #f8f9fa;
+    color: #0b5ed7;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  }
+
+  /* Fade In Animation on Scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+  }
+  
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 768px) {
+    .glass-title { font-size: 2.2rem; }
+    .glass-card { padding: 2rem 1.5rem; }
+    .btn-custom { margin-bottom: 1rem; width: 100%; }
+    .stat-item { margin-bottom: 2rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 🎬 Hero Section -->
+<section class="hero-wrapper">
+  <video autoplay muted loop playsinline class="hero-video">
+    <source src="{% static 'your_video.mp4' %}" type="video/mp4">
+  </video>
+  
+  <div class="hero-overlay"></div>
+
+  <div class="glass-card">
+    <h1 class="glass-title">Welcome to ALeX Library</h1>
+    <p class="glass-subtitle">Your digital gateway to thousands of books, seamless borrowing, and smart management. Discover, request, and read with ease.</p>
+    
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+      {% if user.is_authenticated %}
+        <a href="/library/dashboard/" class="btn-custom btn-primary-custom text-decoration-none">Go to Dashboard</a>
+      {% else %}
+        <a href="/accounts/login/" class="btn-custom btn-primary-custom text-decoration-none">Login</a>
+        <a href="/library/signup/" class="btn-custom btn-secondary-custom text-decoration-none">Sign Up</a>
+      {% endif %}
+      <a href="/library/books/" class="btn-custom btn-success-custom text-decoration-none">Browse Books</a>
+    </div>
+  </div>
+</section>
+
+<!-- 📚 Featured Books Section -->
+<section class="section-padding py-5">
+  <div class="container reveal">
+    <h2 class="section-title">Featured Books</h2>
+    <div class="row g-4">
+      {% for book in featured_books %}
+      <div class="col-lg-3 col-md-6">
+        <div class="book-card">
+          <div class="book-img-wrapper">
+            <img src="{{ book.get_thumbnail }}" alt="{{ book.title }}" class="book-img" style="object-fit: cover;">
+          </div>
+          <div class="book-info">
+            <h5 class="book-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ book.title }}">{{ book.title }}</h5>
+            <p class="book-author" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ book.author }}">{{ book.author }}</p>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">
+        <p>No featured books available at the moment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 🚀 Features Section -->
+<section class="section-padding bg-light" style="background-color: var(--bg-primary) !important;">
+  <div class="container reveal">
+    <h2 class="section-title">Why Choose ALeX?</h2>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="feature-box">
+          <i class="bi bi-search feature-icon"></i>
+          <h4>Smart Search</h4>
+          <p class="text-muted">Instantly find books by title, author, or category using our advanced catalog system.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="feature-box">
+          <i class="bi bi-arrow-left-right feature-icon"></i>
+          <h4>Easy Borrowing</h4>
+          <p class="text-muted">Request issues and returns with a single click. Instant admin approvals.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="feature-box">
+          <i class="bi bi-laptop feature-icon"></i>
+          <h4>Digital Reading</h4>
+          <p class="text-muted">Access e-books, study materials, and engineering PDFs from anywhere.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="feature-box">
+          <i class="bi bi-shield-lock feature-icon"></i>
+          <h4>Secure Account</h4>
+          <p class="text-muted">Privacy-first profiles, fine tracking, and secure Razorpay payment integration.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 📊 Stats Section -->
+<section class="stats-section reveal">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="stat-item">
+          <h3>100+</h3>
+          <p>Books Available</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-item">
+          <h3>100+</h3>
+          <p>Active Users</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-item">
+          <h3>1,000+</h3>
+          <p>Daily Reads</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 💬 Testimonials Section -->
+<section class="section-padding">
+  <div class="container reveal">
+    <h2 class="section-title">What Our Readers Say</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <i class="bi bi-quote quote-icon"></i>
+          <p class="mb-0">"ALeX Library revolutionized how I find materials for my engineering courses. The digital borrowing is simply incredible."</p>
+          <div class="testimonial-author">
+            <img src="" alt="User" class="testimonial-img">
+            <div>
+              <h6 class="mb-0 fw-bold">Shashank Deore</h6>
+              <small class="text-muted">CSE Student</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <i class="bi bi-quote quote-icon"></i>
+          <p class="mb-0">"The dark mode UI, smooth animations, and the easy fine payment system make this the best library portal I've used."</p>
+          <div class="testimonial-author">
+            <img src="https://media.licdn.com/dms/image/v2/D4D03AQFzLSqAWxrEMA/profile-displayphoto-scale_400_400/B4DZ0xEubYKUAg-/0/1774644817395?e=1777507200&v=beta&t=cp4ExUrnJuax0uKzO-l57Mh_wW2OF1RYJTsqIYuHbrs" alt="User" class="testimonial-img">
+            <div>
+              <h6 class="mb-0 fw-bold">Sarvesh Khade</h6>
+              <small class="text-muted">CSE Student</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <i class="bi bi-quote quote-icon"></i>
+          <p class="mb-0">"I love the curated collections. Finding fiction books for the weekend is just as easy as finding academic journals."</p>
+          <div class="testimonial-author">
+            <img src="https://media.licdn.com/dms/image/v2/D4D03AQHZs4--FiO_jA/profile-displayphoto-scale_400_400/B4DZzWHlcnIgAg-/0/1773118847077?e=1777507200&v=beta&t=1qZRyiM1Hp_SpCBAQNHYESfUe00shj-UPhexdvb9xug" alt="User" class="testimonial-img">
+            <div>
+              <h6 class="mb-0 fw-bold">Pranay Pore</h6>
+              <small class="text-muted">CSE Student</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 📩 Call-to-Action Section -->
+<section class="container reveal pb-5">
+  <div class="cta-section">
+    <h2>Start Your Reading Journey Today</h2>
+    <p class="lead mb-4 mx-auto" style="max-width: 600px;">Join thousands of students and book enthusiasts discovering a world of knowledge through ALeX.</p>
+    {% if not user.is_authenticated %}
+      <a href="/library/signup/" class="cta-btn">Join Now</a>
+    {% else %}
+      <a href="/library/books/" class="cta-btn">Explore Catalog</a>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Syllabus Update Modal -->
+<div class="modal fade" id="syllabusModal" tabindex="-1" aria-labelledby="syllabusModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.3);">
+      <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, #0d6efd 0%, #198754 100%);">
+        <h5 class="modal-title fw-bold" id="syllabusModalLabel"><i class="bi bi-info-circle-fill me-2"></i> Important Update</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 text-center">
+        <i class="bi bi-journals mb-3 d-block" style="font-size: 3rem; color: #0d6efd;"></i>
+        <p class="fs-5 fw-medium mb-0" style="color: var(--text-primary);">The university has revised the syllabus. The updated syllabus will be made available soon, and books will be provided accordingly.</p>
+      </div>
+      <div class="modal-footer border-0 justify-content-center pb-4">
+        <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">I Understand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    function reveal() {
+      var reveals = document.querySelectorAll(".reveal");
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 100;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        }
+      }
+    }
+    
+    window.addEventListener("scroll", reveal);
+    setTimeout(reveal, 100);
+    
+    var syllabusModal = new bootstrap.Modal(document.getElementById('syllabusModal'));
+    syllabusModal.show();
+  });
+</script>
+{% endblock %}

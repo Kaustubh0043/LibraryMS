@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Activation Link Invalid{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="alert alert-danger shadow-sm">
+      <h4 class="alert-heading">Activation link is invalid or expired</h4>
+      <p>Please request a new activation email by attempting to log in, or sign up again.</p>
+      <hr>
+      <div class="d-flex gap-2">
+        <a href="/accounts/login/" class="btn btn-outline-primary">Go to Login</a>
+        <a href="/library/signup/" class="btn btn-primary">Create Account</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

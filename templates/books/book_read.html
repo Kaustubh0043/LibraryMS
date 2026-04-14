@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Read: {{ book.title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">{{ book.title }}</h2>
+  <a class="btn btn-outline-secondary" href="/library/books/{{ book.id }}/">Back to details</a>
+  </div>
+
+{% if has_access %}
+  <div class="ratio ratio-16x9 border-0 rounded-4 shadow-lg overflow-hidden" style="background: #1a1a1a; min-height: 600px;">
+    <iframe src="{{ source }}" title="{{ book.title }}" allow="fullscreen" style="border:0; height: 100%;"></iframe>
+  </div>
+  <div class="alert alert-info mt-3 rounded-4 d-flex align-items-center justify-content-between">
+    <div>
+      <h6 class="mb-1"><i class="bi bi-info-circle-fill me-2"></i>Having trouble viewing?</h6>
+      <p class="mb-0 small text-muted">Some book providers restrict viewing inside browsers. Use the direct link if the window above is blank.</p>
+    </div>
+    <a href="{{ source }}" class="btn btn-primary rounded-pill px-4" target="_blank" rel="noopener">
+      <i class="bi bi-box-arrow-up-right me-1"></i> Open in New Tab
+    </a>
+  </div>
+{% else %}
+  <!-- Simulated Limited Preview -->
+  <div class="position-relative mb-5" style="border-radius: 24px; overflow: hidden; background: #f8f9fa; border: 1px solid var(--border-color);">
+    <div class="preview-container" style="height: 600px; overflow: hidden; pointer-events: none; opacity: 0.7; filter: blur(0.5px);">
+        <iframe src="{{ source }}#toolbar=0&navpanes=0&scrollbar=0" title="{{ book.title }}" style="border:0; width: 100%; height: 1200px; transform: scale(1); transform-origin: top center;"></iframe>
+    </div>
+    
+    <!-- The "Request Access" Overlay -->
+    <div class="position-absolute bottom-0 start-0 w-100 p-5 text-center" style="background: linear-gradient(0deg, var(--card-bg) 0%, var(--card-bg) 60%, rgba(255,255,255,0) 100%); z-index: 10;">
+      <div class="py-4">
+        <div class="mb-4">
+          <i class="bi bi-lock-fill text-primary" style="font-size: 3.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-3" style="color: var(--text-primary);">Preview Ended</h3>
+        <p class="text-muted mx-auto mb-4" style="max-width: 500px;">
+          You are reading a limited preview of <b>{{ book.title }}</b>. 
+          To unlock the complete high-quality digital copy and all supplementary materials, please submit an issue request.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+           <a href="/library/issue/{{ book.id }}/" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow">
+             <i class="bi bi-bookmark-plus-fill me-2"></i>Request Full Access
+           </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+/* Dark Mode Reader Adjustments */
+body.dark-mode .alert-info {
+    background-color: #0c1c2e !important;
+    border-color: #0a4f7a !important;
+    color: #a5d8ff !important;
+}
+
+body.dark-mode .alert-info .text-muted {
+    color: #8bb9df !important;
+}
+
+body.dark-mode .preview-container {
+    background: #111 !important;
+    opacity: 0.5 !important;
+}
+
+body.dark-mode .position-relative {
+    background: #1a1a1a !important;
+    border-color: #333 !important;
+}
+
+/* Gradient fix for dark mode */
+body.dark-mode div[style*="background: linear-gradient"] {
+    background: linear-gradient(0deg, #1a1a1a 0%, #1a1a1a 60%, rgba(26, 26, 26, 0) 100%) !important;
+}
+</style>
+{% endblock %}

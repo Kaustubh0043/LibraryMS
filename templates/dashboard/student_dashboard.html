@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="dashboard-header mb-4 d-flex align-items-center justify-content-between p-4 rounded-4 shadow-sm" style="background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-primary) 100%); border: 1px solid var(--border-color);">
+    <div>
+      <h2 class="fw-bold mb-1" style="color: var(--text-primary);">
+        <i class="bi bi-person-workspace text-primary me-2"></i> Student Dashboard
+      </h2>
+      <p class="text-muted mb-0">Manage your active issues, returns, and track fine payments.</p>
+    </div>
+    <a href="/library/books/" class="btn btn-primary rounded-pill px-4 shadow-sm">
+      <i class="bi bi-book me-1"></i> Browse Books
+    </a>
+  </div>
+
+  <div class="card shadow-sm border-0 rounded-4" style="background-color: var(--card-bg); overflow: hidden;">
+    <div class="card-header bg-transparent border-bottom-0 pt-4 pb-2 px-4">
+      <h5 class="fw-bold mb-0" style="color: var(--text-primary);">Your Transactions</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table dashboard-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th class="ps-4">Book Title</th>
+              <th>Status</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Fine</th>
+              <th class="pe-4 text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for t in transactions %}
+            <tr>
+              <td class="ps-4 fw-medium" style="color: var(--text-primary);">{{ t.book.title }}</td>
+              <td>
+                {% if t.status == 'issued' %}
+                  <span class="badge bg-primary rounded-pill px-3">{{ t.get_status_display }}</span>
+                {% elif t.status == 'returned' %}
+                  <span class="badge bg-success rounded-pill px-3">{{ t.get_status_display }}</span>
+                {% elif t.status == 'requested' %}
+                  <span class="badge bg-warning text-dark rounded-pill px-3">{{ t.get_status_display }}</span>
+                {% elif t.status == 'return_requested' %}
+                  <span class="badge bg-info text-dark rounded-pill px-3">Return Pending</span>
+                {% else %}
+                  <span class="badge bg-secondary rounded-pill px-3">{{ t.get_status_display }}</span>
+                {% endif %}
+              </td>
+              <td class="text-muted">{{ t.issue_date|default:'-' }}</td>
+              <td class="text-muted">{{ t.due_date|default:'-' }}</td>
+              <td>
+                {% if t.return_date %}
+                  <span class="fw-semibold text-danger">₹{{ t.fine }}</span>
+                {% elif t.due_date and t.calculate_fine > 0 %}
+                  <span class="fw-semibold text-danger">₹{{ t.calculate_fine }}</span>
+                {% else %}
+                  <span class="text-success"><i class="bi bi-check-circle"></i> None</span>
+                {% endif %}
+              </td>
+              <td class="pe-4 text-end text-nowrap">
+                <form method="post" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="txn_id" value="{{ t.id }}"/>
+                  
+                  {% if t.status == 'requested' %}
+                    <button name="action" value="cancel_request" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Cancel this request?')"><i class="bi bi-trash me-1"></i>Cancel</button>
+                  {% endif %}
+
+                  {% if t.status == 'issued' %}
+                    <a class="btn btn-sm btn-primary rounded-pill px-3 fw-medium" href="/library/read/{{ t.book.id }}/"><i class="bi bi-book-half me-1"></i>Read Now</a>
+                    <button name="action" value="request_return" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-medium ms-1"><i class="bi bi-check2-square me-1"></i>Done Reading</button>
+                  {% endif %}
+
+                  <!-- Pay Fine logic if needed -->
+                  {% if t.calculate_fine > 0 and t.status != 'returned' %}
+                    <a class="btn btn-sm btn-danger rounded-pill px-3 fw-medium shadow-sm ms-1" href="/library/payment/create/{{ t.id }}/">Pay Fine</a>
+                  {% endif %}
+                </form>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6" class="text-center py-5">
+                <div class="empty-state">
+                  <i class="bi bi-journal-x text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
+                  <h5 class="fw-semibold text-muted">No transactions found.</h5>
+                  <p class="text-muted small">You haven't requested or borrowed any books yet.</p>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Dashboard Table Theming */
+.dashboard-table {
+  --bs-table-bg: transparent;
+  color: var(--text-primary);
+}
+.dashboard-table thead {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.dashboard-table thead th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border-color);
+  padding: 1rem;
+}
+.dashboard-table tbody tr {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--border-color);
+}
+.dashboard-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+.dashboard-table td {
+  padding: 1.25rem 1rem;
+}
+body.dark-mode .dashboard-table thead {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+body.dark-mode .dashboard-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+body.dark-mode .empty-state h5,
+body.dark-mode .empty-state p {
+  color: var(--text-secondary) !important;
+}
+body.dark-mode .table > :not(caption) > * > * {
+  color: var(--text-primary);
+  border-bottom-color: var(--border-color);
+}
+</style>
+{% endblock %}

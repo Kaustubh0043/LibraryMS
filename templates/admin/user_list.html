@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}User Management{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="dashboard-header mb-4 d-flex align-items-center justify-content-between p-4 rounded-4 shadow-sm header-card">
+    <div>
+      <h2 class="fw-bold mb-1 title-text">
+        <i class="bi bi-people text-primary me-2"></i> User Directory
+      </h2>
+      <p class="text-muted mb-0">Browse and monitor student activity across the library.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="/library/admin/transactions/" class="btn btn-outline-secondary rounded-pill px-4 history-btn">All History</a>
+      <a href="/library/dashboard/" class="btn btn-primary rounded-pill px-4 shadow-sm">Dashboard</a>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0 rounded-4 main-card" style="overflow: hidden;">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0 user-table">
+        <thead class="bg-light table-header">
+          <tr>
+            <th class="ps-4">Student</th>
+            <th>Department</th>
+            <th>Year/Sem</th>
+            <th>Contact</th>
+            <th class="pe-4 text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in students %}
+          <tr>
+            <td class="ps-4">
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; font-weight: bold;">
+                  {{ s.username|first|upper }}
+                </div>
+                <div>
+                  <div class="fw-bold user-name-text">{{ s.get_full_name|default:s.username }}</div>
+                  <small class="user-email-text">{{ s.email }}</small>
+                </div>
+              </div>
+            </td>
+            <td class="cell-text">{{ s.department|default:'-' }}</td>
+            <td class="cell-text">{{ s.year|default:'-' }} / {{ s.semester|default:'-' }}</td>
+            <td class="cell-text">{{ s.mobile_number|default:'-' }}</td>
+            <td class="pe-4 text-end">
+              <a href="{% url 'admin_user_detail' s.id %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">View History</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Light Mode Defaults */
+.header-card { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border: 1px solid #e0e0e0; }
+.main-card { background-color: #ffffff !important; }
+.user-name-text { color: #212529; }
+.user-email-text { color: #6c757d; }
+.cell-text { color: #495057; }
+
+/* Dark Mode Overrides */
+body.dark-mode .header-card,
+body.dark-mode .main-card {
+    background: #1a1a1a !important;
+    border: 1px solid #333 !important;
+}
+
+body.dark-mode .title-text,
+body.dark-mode .cell-text {
+    color: #ffffff !important;
+}
+
+body.dark-mode .user-name-text {
+    color: #ffcc00 !important; /* AMBER */
+}
+
+body.dark-mode .user-email-text {
+    color: #00e5ff !important; /* CYAN */
+}
+
+body.dark-mode .table-header {
+    background-color: #252525 !important;
+}
+
+body.dark-mode .table-header th {
+    color: #ffffff !important;
+    border-bottom: 1px solid #333;
+}
+
+body.dark-mode .history-btn {
+    color: #ffffff !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode .text-muted {
+    color: #aaaaaa !important;
+}
+</style>
+{% endblock %}

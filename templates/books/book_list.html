@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block title %}Books{% endblock %}
+{% block content %}
+<div class="d-flex position-relative align-items-center justify-content-center mb-4">
+  <h2 class="mb-0 fw-bold">Books</h2>
+  {% if user.is_staff %}
+    <div class="position-absolute end-0">
+      <a class="btn btn-success rounded-pill px-4" href="/library/books/add/">Add Book</a>
+    </div>
+  {% endif %}
+</div>
+
+<form id="booksFilter" class="row g-2 mt-3" method="get">
+  <div class="col-md-4">
+    <input name="q" class="form-control" placeholder="Search title or author (auto)" value="{{ query }}" />
+  </div>
+  <div class="col-md-2">
+    <select name="department" class="form-select">
+      <option value="">Department</option>
+      <option value="CSE" {% if department == 'CSE' %}selected{% endif %}>CSE</option>
+      <option value="ECE" {% if department == 'ECE' %}selected{% endif %}>ECE</option>
+      <option value="ME" {% if department == 'ME' %}selected{% endif %}>ME</option>
+      <option value="CIVIL" {% if department == 'CIVIL' %}selected{% endif %}>CIVIL</option>
+      <option value="EEE" {% if department == 'EEE' %}selected{% endif %}>EEE</option>
+      <option value="CHEM" {% if department == 'CHEM' %}selected{% endif %}>CHEM</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <select name="year" class="form-select">
+      <option value="">Year</option>
+      <option value="1" {% if year == '1' %}selected{% endif %}>1</option>
+      <option value="2" {% if year == '2' %}selected{% endif %}>2</option>
+      <option value="3" {% if year == '3' %}selected{% endif %}>3</option>
+      <option value="4" {% if year == '4' %}selected{% endif %}>4</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <select name="semester" class="form-select">
+      <option value="">Semester</option>
+      <option value="1" {% if semester == '1' %}selected{% endif %}>1</option>
+      <option value="2" {% if semester == '2' %}selected{% endif %}>2</option>
+      <option value="3" {% if semester == '3' %}selected{% endif %}>3</option>
+      <option value="4" {% if semester == '4' %}selected{% endif %}>4</option>
+      <option value="5" {% if semester == '5' %}selected{% endif %}>5</option>
+      <option value="6" {% if semester == '6' %}selected{% endif %}>6</option>
+      <option value="7" {% if semester == '7' %}selected{% endif %}>7</option>
+      <option value="8" {% if semester == '8' %}selected{% endif %}>8</option>
+    </select>
+  </div>
+  <div class="col-md-2 d-flex align-items-center"><span class="text-muted small">Filters auto-apply</span></div>
+</form>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+  {% for b in books %}
+  <div class="col">
+    <div class="card h-100 shadow-sm book-card">
+    <img src="{{ b.get_thumbnail }}" class="card-img-top book-thumb" alt="{{ b.title }} cover" loading="lazy" />
+  <div class="card-body">
+        <h5 class="card-title fw-bold mb-1">{{ b.title }}</h5>
+        <p class="card-text mb-2"><span class="fw-medium">Author:</span> {{ b.author }}</p>
+        <div class="mb-2">
+          <span class="badge bg-secondary-subtle text-secondary me-1">{{ b.department }}</span>
+          <span class="badge bg-success-subtle text-success me-1">Year {{ b.year }}</span>
+          <span class="badge bg-warning-subtle text-warning">Sem {{ b.semester }}</span>
+        </div>
+        <div class="mb-2"><span class="fw-medium">ISBN:</span> {{ b.isbn }}</div>
+        <div class="mb-2">
+          <span class="fw-medium">Available:</span>
+          {% if b.available_copies > 0 %}
+            <span class="badge text-bg-success">{{ b.available_copies }}</span>
+          {% else %}
+            <span class="badge text-bg-danger">0</span>
+          {% endif %}
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-2">
+  <a class="btn btn-sm btn-view" href="/library/books/{{ b.id }}/">View</a>
+  {% if b.readable_source %}
+    <a class="btn btn-sm btn-read" href="/library/books/{{ b.id }}/read/">Read</a>
+  {% endif %}
+  {% if user.is_staff %}
+    <a class="btn btn-sm btn-outline-secondary" href="/library/books/{{ b.id }}/edit/">Edit</a>
+    <a class="btn btn-sm btn-outline-danger" href="/library/books/{{ b.id }}/delete/">Delete</a>
+  {% endif %}
+  {% if user.is_authenticated and b.available_copies > 0 %}
+    <a class="btn btn-sm btn-request" href="/library/issue/{{ b.id }}/">Request Issue</a>
+  {% endif %}
+</div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col"><div class="card h-100"><div class="card-body text-center">No books yet.</div></div></div>
+  {% endfor %}
+</div>
+<style>
+.book-thumb {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center top;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.book-card {
+  border-radius: 1rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+  background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
+  border: 1px solid #e3f2fd;
+}
+.book-card:hover {
+  box-shadow: 0 0 0 4px #90caf9;
+  transform: translateY(-2px) scale(1.02);
+}
+.btn-view {
+  background: linear-gradient(90deg, #42a5f5 0%, #478ed1 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(66,165,245,0.08);
+}
+.btn-view:hover {
+  background: linear-gradient(90deg, #478ed1 0%, #42a5f5 100%);
+  color: #fff;
+}
+.btn-read {
+  background: linear-gradient(90deg, #66bb6a 0%, #43a047 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(102,187,106,0.08);
+}
+.btn-read:hover {
+  background: linear-gradient(90deg, #43a047 0%, #66bb6a 100%);
+  color: #fff;
+}
+.btn-request {
+  background: linear-gradient(90deg, #ffb300 0%, #f57c00 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255,193,7,0.08);
+}
+.btn-request:hover {
+  background: linear-gradient(90deg, #f57c00 0%, #ffb300 100%);
+  color: #fff;
+}
+</style>
+<script>
+  (function(){
+    const form = document.getElementById('booksFilter');
+    if(!form) return;
+    const submit = () => form.requestSubmit();
+    let timer;
+    form.querySelectorAll('select').forEach(el => el.addEventListener('change', submit));
+    const q = form.querySelector('input[name="q"]');
+    if(q){
+      q.addEventListener('input', () => {
+        clearTimeout(timer);
+        timer = setTimeout(submit, 400);
+      });
+    }
+
+    // Year -> Semester dynamic options
+    const yearSelect = form.querySelector('select[name="year"]');
+    const semSelect = form.querySelector('select[name="semester"]');
+    const groups = { '1': [1,2], '2': [3,4], '3': [5,6], '4': [7,8] };
+    function rebuildSemesterOptions(){
+      const year = yearSelect.value;
+      const allowed = groups[year] || [1,2,3,4,5,6,7,8];
+      const current = semSelect.value;
+      semSelect.innerHTML = '<option value="">Semester</option>' +
+        allowed.map(n => `<option value="${n}">${n}</option>`).join('');
+      if (allowed.includes(parseInt(current))) {
+        semSelect.value = current;
+      } else {
+        semSelect.value = '';
+      }
+    }
+    yearSelect.addEventListener('change', function(){ rebuildSemesterOptions(); submit(); });
+    rebuildSemesterOptions();
+  })();
+</script>
+{% endblock %}

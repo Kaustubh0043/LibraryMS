@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Feedback - ALeX Library{% endblock %}
+
+{% block content %}
+<div class="container py-5 d-flex align-items-center" style="min-height: 80vh;">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-10 col-lg-8 mx-auto">
+      <div class="card shadow-lg border-0 rounded-4" style="background-color: var(--card-bg); overflow: hidden;">
+        <div class="card-header border-0 text-white p-4" style="background: linear-gradient(135deg, #6f42c1 0%, #d63384 100%);">
+          <h3 class="fw-bold mb-1 text-center"><i class="bi bi-chat-right-quote me-2"></i>Share Your Feedback</h3>
+          <p class="text-center mb-0 opacity-75">Your input helps us improve ALeX Library.</p>
+        </div>
+        <div class="card-body p-5">
+          <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+              <label class="form-label fw-bold mb-3" style="color: var(--text-primary);">How was your experience?</label>
+              <div class="d-flex justify-content-between mb-4 w-100">
+                <div class="form-check form-check-inline m-0 text-center flex-fill">
+                  <input class="btn-check" type="radio" name="rating" id="rating1" value="bad">
+                  <label class="btn btn-outline-danger w-100 py-3 shadow-sm rounded-4" for="rating1"><i class="bi bi-emoji-frown fs-2 d-block mb-1"></i><small class="fw-bold">Bad</small></label>
+                </div>
+                <div class="form-check form-check-inline m-0 text-center flex-fill ms-2">
+                  <input class="btn-check" type="radio" name="rating" id="rating2" value="okay" checked>
+                  <label class="btn btn-outline-warning w-100 py-3 shadow-sm rounded-4" for="rating2"><i class="bi bi-emoji-neutral fs-2 d-block mb-1"></i><small class="fw-bold">Okay</small></label>
+                </div>
+                <div class="form-check form-check-inline m-0 text-center flex-fill ms-2">
+                  <input class="btn-check" type="radio" name="rating" id="rating3" value="good">
+                  <label class="btn btn-outline-success w-100 py-3 shadow-sm rounded-4" for="rating3"><i class="bi bi-emoji-smile fs-2 d-block mb-1"></i><small class="fw-bold">Good</small></label>
+                </div>
+                <div class="form-check form-check-inline m-0 text-center flex-fill ms-2">
+                  <input class="btn-check" type="radio" name="rating" id="rating4" value="excellent">
+                  <label class="btn btn-outline-primary w-100 py-3 shadow-sm rounded-4" for="rating4"><i class="bi bi-emoji-heart-eyes fs-2 d-block mb-1"></i><small class="fw-bold">Great</small></label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-5">
+              <label class="form-label fw-bold mb-2" style="color: var(--text-primary);">What could we do better?</label>
+              <textarea class="form-control p-3 shadow-sm" name="feedback_text" rows="5" required placeholder="Tell us what you liked or what we can improve..." style="border-radius: 12px; border: 1px solid var(--border-color); resize: none;"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-info text-white w-100 rounded-pill py-3 fw-bold fs-5 shadow-sm" style="background: linear-gradient(135deg, #6f42c1 0%, #d63384 100%); border: none;">
+              <i class="bi bi-rocket-takeoff me-2"></i>Submit Feedback
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,630 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - ALeX Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+{% block body_class %}simple-signup-page{% endblock %}
+{% block content %}
+
+<div class="simple-signup-container">
+  <div class="simple-signup-card">
+    <div class="signup-left">
+      <img src="{% static 'dem.png' %}?v=2" alt="Signup" class="signup-image">
+    </div>
+    <div class="signup-right">
+      <a href="/" class="back-btn">← Back</a>
+      
+      <h1 class="signup-title">Create an Account</h1>
+      <p class="signup-subtitle">Already have an account? <a href="/accounts/login/">Log in</a></p>
+      
+      {% if messages %}
+        <div class="messages mb-4">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} rounded-3 shadow-sm">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="alert alert-danger rounded-3 shadow-sm mb-4">
+          <ul class="mb-0">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li>{{ field.label }}: {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      
+      <form method="post">
+        {% csrf_token %}
+        
+        <!-- Account Info -->
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="johndoe123" required value="{{ form.username.value|default:'' }}">
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>First Name</label>
+            <input type="text" name="first_name" placeholder="John" required value="{{ form.first_name.value|default:'' }}">
+          </div>
+          <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" name="last_name" placeholder="Doe" value="{{ form.last_name.value|default:'' }}">
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="your.email@example.com" required value="{{ form.email.value|default:'' }}">
+        </div>
+        
+        <input type="hidden" name="role" value="student">
+        
+        <!-- Academic Info -->
+        <div class="input-group">
+          <label>Department</label>
+          <select name="department" class="form-select" required>
+            <option value="CSE">Computer Science (CSE)</option>
+            <option value="ECE">Electronics (ECE)</option>
+            <option value="ME">Mechanical (ME)</option>
+            <option value="CIVIL">Civil Engineering</option>
+            <option value="EEE">Electrical (EEE)</option>
+            <option value="CHEM">Chemical (CHEM)</option>
+          </select>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>Academic Year</label>
+            <select name="year" class="form-select" required>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Semester</label>
+            <select name="semester" class="form-select" required>
+              <option value="1">Sem 1</option>
+              <option value="2">Sem 2</option>
+              <option value="3">Sem 3</option>
+              <option value="4">Sem 4</option>
+              <option value="5">Sem 5</option>
+              <option value="6">Sem 6</option>
+              <option value="7">Sem 7</option>
+              <option value="8">Sem 8</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Mobile Number (Optional)</label>
+          <input type="text" name="mobile_number" placeholder="+91 98765 43210" value="{{ form.mobile_number.value|default:'' }}">
+        </div>
+        
+        <!-- Security -->
+        <div class="input-row">
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" name="password1" placeholder="••••••••" required>
+          </div>
+          <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" name="password2" placeholder="••••••••" required>
+          </div>
+        </div>
+        
+        <button type="submit" class="signup-btn mt-2">Create Account</button>
+        
+        <div class="terms">
+          <label><input type="checkbox" required> I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a></label>
+        </div>
+        
+        <div class="divider">or</div>
+        
+        <a href="/accounts/google/login/" class="social-btn google">
+          <i class="bi bi-google"></i> Continue with Google
+        </a>
+        <button type="button" class="social-btn mobile" onclick="showMobileLogin()">
+          <i class="bi bi-phone"></i> Continue with Mobile Number
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+body.simple-signup-page {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4a90e2 100%) !important;
+  font-family: 'Inter', sans-serif !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.simple-signup-page main.container {
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 100px 20px 40px 20px !important;
+  max-width: none !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+}
+
+.simple-signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px 0;
+}
+
+.simple-signup-card {
+  display: flex;
+  background: var(--card-bg, #fff);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  overflow: hidden;
+  width: 1000px;
+  max-width: 95%;
+  min-height: 600px;
+}
+
+.signup-left {
+  flex: 1;
+  display: flex;
+  position: relative;
+}
+
+.signup-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+  border-radius: 20px 0 0 20px;
+}
+
+.signup-right {
+  flex: 1;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.back-btn {
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.signup-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+.signup-subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.signup-subtitle a {
+  color: #212529;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.input-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.input-row .input-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: baseline; /* Better for text-heavy layouts */
+}
+
+.input-group label {
+  font-weight: 500;
+  color: #212529;
+  margin-bottom: 0;
+  width: 110px;
+  flex-shrink: 0;
+  padding-top: 6px; /* Nudge label down to match box text baseline */
+}
+
+.input-group input, .form-select {
+  flex-grow: 1;
+}
+
+.input-group input, .form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.input-group input:focus, .form-select:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.form-select {
+  cursor: pointer;
+  background-color: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 6px center;
+  background-repeat: no-repeat;
+  background-size: 12px;
+  padding-right: 28px;
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 14px;
+  background: #212529;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.signup-btn:hover {
+  background: #000;
+}
+
+.terms {
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.terms input[type="checkbox"] {
+  width: auto !important;
+  margin: 0;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.terms label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.terms a {
+  color: #212529;
+  text-decoration: underline;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #666;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider:not(:empty)::before {
+  margin-right: .5em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: .5em;
+}
+
+.social-btn {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  box-sizing: border-box;
+}
+
+.social-btn:hover {
+  background: #f8f9fa;
+  text-decoration: none;
+}
+
+.social-btn.google {
+  color: #db4437;
+}
+
+.social-btn.google:hover {
+  color: #db4437;
+}
+
+.social-btn.mobile {
+  color: #25d366;
+}
+
+.social-btn.mobile:hover {
+  color: #25d366;
+  border-color: #25d366;
+  background: rgba(37, 211, 102, 0.05);
+}
+
+@media (max-width: 768px) {
+  .simple-signup-card {
+    flex-direction: column;
+    margin: 20px;
+  }
+  
+  .signup-left {
+    min-height: 200px;
+  }
+  
+  .signup-right {
+    padding: 30px 20px;
+  }
+  
+  .signup-title {
+    font-size: 2rem;
+  }
+  
+  .input-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .input-row .input-group {
+    margin-bottom: 20px;
+  }
+}
+
+/* Dark Mode Overrides for Signup */
+body.dark-mode.simple-signup-page {
+  background: linear-gradient(135deg, #111 0%, #222 50%, #333 100%) !important;
+}
+
+body.dark-mode .simple-signup-card {
+  background: #2d2d2d;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  border: 1px solid #444;
+}
+
+body.dark-mode .signup-title,
+body.dark-mode .input-group label,
+body.dark-mode .terms label,
+body.dark-mode .terms a,
+body.dark-mode .signup-subtitle a {
+  color: #fff !important;
+}
+
+body.dark-mode .input-row .input-group label {
+  width: 90px; /* Tightened further for dual-column rows */
+}
+
+body.dark-mode .signup-subtitle,
+body.dark-mode .terms {
+  color: #aaa !important;
+}
+
+body.dark-mode .input-group input,
+body.dark-mode .form-select {
+  background: #1a1a1a;
+  border-color: #555;
+  color: #fff;
+}
+
+body.dark-mode .signup-btn {
+  background: #0d6efd;
+  color: #fff;
+}
+
+body.dark-mode .signup-btn:hover {
+  background: #0b5ed7;
+}
+
+body.dark-mode .social-btn {
+  background: #1a1a1a;
+  border-color: #555;
+  color: #fff !important;
+}
+
+body.dark-mode .social-btn:hover {
+  background: #333;
+}
+
+body.dark-mode .divider::before,
+body.dark-mode .divider::after {
+  border-bottom-color: #555;
+}
+
+body.dark-mode .divider {
+  color: #aaa;
+}
+
+body.dark-mode .back-btn {
+  color: #aaa;
+}
+
+body.dark-mode .back-btn:hover {
+  color: #fff;
+}
+</style>
+
+<script>
+function showMobileLogin() {
+  // Create mobile login modal
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  `;
+  
+  modal.innerHTML = `
+    <div style="background: white; border-radius: 16px; padding: 30px; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <i class="bi bi-phone" style="font-size: 2rem; color: #25d366; margin-bottom: 10px;"></i>
+        <h3 style="margin: 0; color: #212529;">Continue with Mobile</h3>
+        <p style="color: #666; margin: 10px 0 0 0; font-size: 14px;">Enter your mobile number to sign up or log in</p>
+      </div>
+      
+      <form onsubmit="handleMobileLogin(event)">
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 500; color: #212529; margin-bottom: 8px;">Mobile Number</label>
+          <input type="tel" id="mobileNumber" placeholder="+1 (555) 123-4567" required 
+                 style="width: 100%; padding: 12px 16px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+        </div>
+        
+        <button type="submit" style="width: 100%; padding: 14px; background: #25d366; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; margin-bottom: 15px;">
+          Send OTP
+        </button>
+        
+        <button type="button" onclick="closeMobileModal()" style="width: 100%; padding: 12px; background: #f8f9fa; color: #666; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; cursor: pointer;">
+          Cancel
+        </button>
+      </form>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  modal.onclick = (e) => { if (e.target === modal) closeMobileModal(); };
+  window.currentMobileModal = modal;
+}
+
+function closeMobileModal() {
+  if (window.currentMobileModal) {
+    document.body.removeChild(window.currentMobileModal);
+    window.currentMobileModal = null;
+  }
+}
+
+function handleMobileLogin(event) {
+  event.preventDefault();
+  const mobile = document.getElementById('mobileNumber').value;
+  
+  // For now, show a message that mobile login is coming soon
+  alert(`Mobile login with ${mobile} is coming soon!\n\nThis feature will be implemented with SMS OTP verification.`);
+  closeMobileModal();
+}
+</script>
+
+<script>
+  (function(){
+    const yearSelect = document.querySelector('select[name="year"]');
+    const semSelect = document.querySelector('select[name="semester"]');
+    if (!yearSelect || !semSelect) return;
+
+    const groups = { 
+        '1': [{val: 1, text: 'Sem 1'}, {val: 2, text: 'Sem 2'}], 
+        '2': [{val: 3, text: 'Sem 3'}, {val: 4, text: 'Sem 4'}], 
+        '3': [{val: 5, text: 'Sem 5'}, {val: 6, text: 'Sem 6'}], 
+        '4': [{val: 7, text: 'Sem 7'}, {val: 8, text: 'Sem 8'}] 
+    };
+
+    function updateSemesters() {
+        const year = yearSelect.value;
+        const currentSem = semSelect.value;
+        const options = groups[year] || [];
+        
+        semSelect.innerHTML = '<option value="">Choose Semester</option>';
+        options.forEach(opt => {
+            const el = document.createElement('option');
+            el.value = opt.val;
+            el.textContent = opt.text;
+            if (opt.val == currentSem) el.selected = true;
+            semSelect.appendChild(el);
+        });
+    }
+
+    yearSelect.addEventListener('change', updateSemesters);
+    // Initial run
+    updateSemesters();
+  })();
+</script>
+
+<!-- Terms & Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="background-color: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 16px;">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border-color);">
+        <h5 class="modal-title fw-bold" id="termsModalLabel">Terms & Conditions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(var(--invert-value, 0));"></button>
+      </div>
+      <div class="modal-body" style="line-height: 1.6; font-size: 0.95rem;">
+        <h6 class="fw-bold">1. Agreement to Terms</h6>
+        <p class="text-muted">By signing up for ALeX Library, you agree to be bound by these Terms & Conditions. Access to our digital and physical catalog implies that you accept the rules and regulations outlined here.</p>
+        
+        <h6 class="fw-bold mt-4">2. Digital Borrowing</h6>
+        <p class="text-muted">Users are strictly prohibited from duplicating, distributing, or selling any digital material acquired through the ALeX system. E-books and PDFs are for educational, non-commercial purposes only.</p>
+        
+        <h6 class="fw-bold mt-4">3. Fines & Penalties</h6>
+        <p class="text-muted">If a borrowed item exceeds its return date, the user will be subjected to late fines. Account access may be restricted until fines are processed and cleared through our integrated Razorpay payment gateway.</p>
+        
+        <h6 class="fw-bold mt-4">4. Account Security</h6>
+        <p class="text-muted">You are responsible for safeguarding your password. The library is not liable for any unauthorized access or fines accumulated under your account due to negligence.</p>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid var(--border-color);">
+        <button type="button" class="btn btn-primary px-4 py-2" data-bs-dismiss="modal" style="border-radius: 8px;">I Understand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% block footer %}{% endblock %}
+
+{% endblock %}
