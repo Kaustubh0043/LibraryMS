@@ -8,40 +8,7 @@
 
 ---
 
-## ✨ Project Preview
-
-### 🏠 Home Page
-<p align="center">
-  <img src="media/screenshots/home_page.png" width="800"/>
-</p>
-
----
-
-### 📚 Books Section
-<p align="center">
-  <img src="media/screenshots/library_books_.png" width="800"/>
-</p>
-
----
-
-### 👨‍🎓 Student Dashboard
-<p align="center">
-  <img src="media/screenshots/student_dashboard.png" width="800"/>
-</p>
-
----
-
-### 🛠️ Admin Dashboard
-<p align="center">
-  <img src="media/screenshots/admin_dashboard.png" width="800"/>
-</p>
-
----
-
-### ℹ️ About Page
-<p align="center">
-  <img src="media/screenshots/about_page.png" width="800"/>
-</p>
+![ALeX Logo](static/img/alex_logo_v2.png)
 
 ## ✨ Features
 
