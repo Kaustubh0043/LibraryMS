@@ -59,6 +59,26 @@ ALeX is a premium, high-performance Library Management System designed with a fo
 - **Admin Intelligence Suite**: Dedicated user tracking, global transaction logs, and deep-dive history views.
 - **High-Contrast Reader**: Specialized Cyber-Amber & Cyan color palette for superior readability in dark mode.
 
+## 📸 Visual Showcase
+
+### 🏠 Homepage & Interface
+![Home Page](screenshots/home.png)
+
+### 📊 Dashboard & Admin Suite
+| User Dashboard | Book Management |
+|:---:|:---:|
+| ![Dashboard](screenshots/dashboard.png) | ![Books](screenshots/books.png) |
+
+### 🔐 Authentication & Security
+| Login | Signup |
+|:---:|:---:|
+| ![Login](screenshots/login.png) | ![Signup](screenshots/signup.png) |
+
+### 📄 Auxiliary Pages
+| About | Contact | Feedback |
+|:---:|:---:|:---:|
+| ![About](screenshots/about.png) | ![Contact](screenshots/contact.png) | ![Feedback](screenshots/feedback.png) |
+
 ## 🚀 Quick Setup
 
 ### 1. Environment Configuration
