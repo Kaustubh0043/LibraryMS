@@ -1,6 +1,12 @@
-# ALeX - Modern Library Management System (Django 5)
+# ✧ ALeX | Modern Library Intelligence System
 
-ALeX is a premium, high-performance Library Management System designed with a focus on aesthetics and user experience. It features a fully responsive design, fluid animations, and a rich feature set for both students and administrators.
+![Status](https://img.shields.io/badge/STATUS-PRESENTATION--READY-4cc61e?style=for-the-badge&labelColor=333333)
+![Stack](https://img.shields.io/badge/STACK-DJANGO%205-007acc?style=for-the-badge&labelColor=333333)
+![Design](https://img.shields.io/badge/DESIGN-GLASSMORPHISM-8a2be2?style=for-the-badge&labelColor=333333)
+
+**ALeX** is a premium, high-performance library management ecosystem designed for modern educational institutions. It features a stunning **glassmorphic dashboard**, **automated transaction workflows**, and an **integrated Razorpay UPI fine management suite**.
+
+---
 
 ## ✨ Project Preview
 
