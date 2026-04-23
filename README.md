@@ -6,10 +6,6 @@
 
 **ALeX** is a premium, high-performance library management ecosystem designed for modern educational institutions. It features a stunning **glassmorphic dashboard**, **automated transaction workflows**, and an **integrated Razorpay UPI fine management suite**.
 
----
-
-![ALeX Logo](static/img/alex_logo_v2.png)
-
 ## ✨ Features
 
 ### 🎨 Premium UI & Experience
